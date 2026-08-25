@@ -25,12 +25,19 @@ setupVbenVxeTable({
         proxyConfig: {
           autoLoad: true,
           response: {
-            result: 'items',
+            result: 'rows',
             total: 'total',
             list: 'items',
           },
           showActiveMsg: true,
           showResponseMsg: false,
+        },
+        // 关键：全局启用展开行配置
+        expandConfig: {
+          lazy: true,           // 启用懒加载
+          reserve: true,        // 记住展开状态
+          trigger: 'default',   // 点击箭头展开
+          // loadMethod 不能全局配置，需在 gridOptions 中单独写
         },
         round: true,
         showOverflow: true,

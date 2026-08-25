@@ -91,7 +91,7 @@ const { authPanelCenter, authPanelLeft, authPanelRight, isDark } =
             <img
               :alt="appName"
               :src="sloganImage"
-              class="animate-float h-64 w-2/5"
+              class="animate-float h-99 w-1/2"
             />
           </template>
           <SloganIcon v-else :alt="appName" class="animate-float h-64 w-2/5" />

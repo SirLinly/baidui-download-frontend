@@ -9,5 +9,23 @@ export const overridesPreferences = defineOverridesPreferences({
   // overrides
   app: {
     name: import.meta.env.VITE_APP_TITLE,
+    accessMode: 'backend', // 默认为后端权限模式，可选项：backend | frontend
+    watermark: true,
   },
+  shortcutKeys: {
+      globalSearch: false,
+    },
+    theme: {
+      builtinType: 'sky-blue',
+      colorPrimary: 'hsl(231 98% 65%)',
+      mode: 'auto'
+    },
+    transition : {
+      name: 'fade-down',
+    },
+    widget: {
+      globalSearch : false,
+      languageToggle: false,
+      notification: false,
+    }
 });

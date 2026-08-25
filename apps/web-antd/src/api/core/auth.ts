@@ -7,6 +7,16 @@ export namespace AuthApi {
     username?: string;
   }
 
+  /**
+   * 注册接口参数
+   */
+  export interface RegisterParams {
+    realName?: string;
+    username?: string;
+    password?: string;
+    inviteCode?: string;
+  }
+
   /** 登录接口返回值 */
   export interface LoginResult {
     accessToken: string;
@@ -16,6 +26,7 @@ export namespace AuthApi {
     data: string;
     status: number;
   }
+
 }
 
 /**
@@ -26,10 +37,17 @@ export async function loginApi(data: AuthApi.LoginParams) {
 }
 
 /**
+ * 注册用户
+ */
+export async function registerApi(data: AuthApi.RegisterParams) {
+  return baseRequestClient.post<AuthApi.RegisterParams>('/auth/register', data);
+}
+
+/**
  * 刷新accessToken
  */
 export async function refreshTokenApi() {
-  return baseRequestClient.post<AuthApi.RefreshTokenResult>('/auth/refresh', {
+  return baseRequestClient.post<AuthApi.RefreshTokenResult>('/auth/refreshToken', {
     withCredentials: true,
   });
 }

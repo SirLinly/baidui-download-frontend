@@ -90,6 +90,26 @@ const coreRoutes: RouteRecordRaw[] = [
           title: $t('page.auth.register'),
         },
       },
+      {
+        name: 'Convert',
+        path: '/convert',
+        component: () => import('#/views/card/convertCard/user/index.vue'),
+        meta: {
+          title: '公开页面',
+          ignoreAuth: true,
+          noBasicLayout: true,
+        },
+      },
+      {
+        name: 'Redemption',
+        path: '/redemption',
+        component: () => import('#/views/card/svipCard/user/index.vue'),
+        meta: {
+          title: '公开页面',
+          ignoreAuth: true,
+          noBasicLayout: true,
+        },
+      },
     ],
   },
 ];

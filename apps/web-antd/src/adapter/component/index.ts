@@ -116,6 +116,7 @@ export type ComponentType =
   | 'Input'
   | 'InputNumber'
   | 'InputPassword'
+  | 'InputSearch'
   | 'Mentions'
   | 'PrimaryButton'
   | 'Radio'

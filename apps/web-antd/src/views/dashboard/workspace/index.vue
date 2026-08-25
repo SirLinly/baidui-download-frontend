@@ -1,28 +1,18 @@
 <script lang="ts" setup>
 import type {
   WorkbenchProjectItem,
-  WorkbenchQuickNavItem,
-  WorkbenchTodoItem,
-  WorkbenchTrendItem,
+  WorkbenchQuickNavItem, WorkbenchTrendItem
 } from '@vben/common-ui';
 
-import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-
+import Headder from './headder.vue';
 import {
-  AnalysisChartCard,
-  WorkbenchHeader,
   WorkbenchProject,
-  WorkbenchQuickNav,
-  WorkbenchTodo,
-  WorkbenchTrends,
+  WorkbenchQuickNav, WorkbenchTrends
 } from '@vben/common-ui';
 import { preferences } from '@vben/preferences';
-import { useUserStore } from '@vben/stores';
 import { openWindow } from '@vben/utils';
-
-import AnalyticsVisitsSource from '../analytics/analytics-visits-source.vue';
-
+import { useUserStore } from '@vben/stores';
 const userStore = useUserStore();
 
 // 这是一个示例数据，实际项目中需要根据实际情况进行调整
@@ -33,55 +23,28 @@ const projectItems: WorkbenchProjectItem[] = [
     color: '',
     content: '不要等待机会，而要创造机会。',
     date: '2021-04-01',
-    group: '开源组',
-    icon: 'carbon:logo-github',
-    title: 'Github',
-    url: 'https://github.com',
+    group: '学习是一种信仰',
+    icon: 'https://img0.baidu.com/it/u=2847275791,897687200&fm=253&fmt=auto&app=138&f=JPEG?w=243&h=243',
+    title: '学习通/超星尔雅',
+    url: 'https://erya.mooc.chaoxing.com',
   },
   {
     color: '#3fb27f',
     content: '现在的你决定将来的你。',
     date: '2021-04-01',
-    group: '算法组',
-    icon: 'ion:logo-vue',
-    title: 'Vue',
-    url: 'https://vuejs.org',
+    group: '智慧树下智慧果，欢乐多又多',
+    icon: 'https://miaobi-lite.bj.bcebos.com/miaobi/5mao/b%2755%2Bl5Yiw5pm65oWn5qCRXzE3MzU4Mzc0ODQuNDQ4NTU4OA%3D%3D%27/0.png',
+    title: '知到/智慧树',
+    url: 'https://www.zhihuishu.com/',
   },
   {
     color: '#e18525',
     content: '没有什么才能比努力更重要。',
     date: '2021-04-01',
-    group: '上班摸鱼',
-    icon: 'ion:logo-html5',
-    title: 'Html5',
-    url: 'https://developer.mozilla.org/zh-CN/docs/Web/HTML',
-  },
-  {
-    color: '#bf0c2c',
-    content: '热情和欲望可以突破一切难关。',
-    date: '2021-04-01',
-    group: 'UI',
-    icon: 'ion:logo-angular',
-    title: 'Angular',
-    url: 'https://angular.io',
-  },
-  {
-    color: '#00d8ff',
-    content: '健康的身体是实现目标的基石。',
-    date: '2021-04-01',
-    group: '技术牛',
-    icon: 'bx:bxl-react',
-    title: 'React',
-    url: 'https://reactjs.org',
-  },
-  {
-    color: '#EBD94E',
-    content: '路是走出来的，而不是空想出来的。',
-    date: '2021-04-01',
-    group: '架构组',
-    icon: 'ion:logo-javascript',
-    title: 'Js',
-    url: 'https://developer.mozilla.org/zh-CN/docs/Web/JavaScript',
+    group: '中国大学Mooc',
+    icon: 'https://img1.baidu.com/it/u=498719213,120281600&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+    title: '慕课/中国大学Mooc',
+    url: 'https://www.icourse163.org/',
   },
 ];
 
@@ -96,121 +59,42 @@ const quickNavItems: WorkbenchQuickNavItem[] = [
   {
     color: '#bf0c2c',
     icon: 'ion:grid-outline',
-    title: '仪表盘',
-    url: '/dashboard',
+    title: '课程查询',
+    url: '/course',
   },
   {
     color: '#e18525',
     icon: 'ion:layers-outline',
-    title: '组件',
-    url: '/demos/features/icons',
+    title: '订单列表',
+    url: '/orders',
   },
   {
     color: '#3fb27f',
-    icon: 'ion:settings-outline',
-    title: '系统管理',
-    url: '/demos/features/login-expired', // 这里的 URL 是示例，实际项目中需要根据实际情况进行调整
+    icon: 'ant-design:user-add-outlined',
+    title: '代理列表',
+    url: '/agents', // 这里的 URL 是示例，实际项目中需要根据实际情况进行调整
   },
   {
     color: '#4daf1bc9',
-    icon: 'ion:key-outline',
-    title: '权限管理',
-    url: '/demos/access/page-control',
+    icon: 'ant-design:alipay-circle-filled',
+    title: '在线充值',
+    url: '/online',
   },
   {
     color: '#00d8ff',
     icon: 'ion:bar-chart-outline',
-    title: '图表',
-    url: '/analytics',
+    title: '个人中心',
+    url: '/Info',
   },
 ];
 
-const todoItems = ref<WorkbenchTodoItem[]>([
-  {
-    completed: false,
-    content: `审查最近提交到Git仓库的前端代码，确保代码质量和规范。`,
-    date: '2024-07-30 11:00:00',
-    title: '审查前端代码提交',
-  },
-  {
-    completed: true,
-    content: `检查并优化系统性能，降低CPU使用率。`,
-    date: '2024-07-30 11:00:00',
-    title: '系统性能优化',
-  },
-  {
-    completed: false,
-    content: `进行系统安全检查，确保没有安全漏洞或未授权的访问。 `,
-    date: '2024-07-30 11:00:00',
-    title: '安全检查',
-  },
-  {
-    completed: false,
-    content: `更新项目中的所有npm依赖包，确保使用最新版本。`,
-    date: '2024-07-30 11:00:00',
-    title: '更新项目依赖',
-  },
-  {
-    completed: false,
-    content: `修复用户报告的页面UI显示问题，确保在不同浏览器中显示一致。 `,
-    date: '2024-07-30 11:00:00',
-    title: '修复UI显示问题',
-  },
-]);
+
 const trendItems: WorkbenchTrendItem[] = [
   {
-    avatar: 'svg:avatar-1',
-    content: `在 <a>开源组</a> 创建了项目 <a>Vue</a>`,
-    date: '刚刚',
-    title: '威廉',
-  },
-  {
     avatar: 'svg:avatar-2',
-    content: `关注了 <a>威廉</a> `,
-    date: '1个小时前',
-    title: '艾文',
-  },
-  {
-    avatar: 'svg:avatar-3',
-    content: `发布了 <a>个人动态</a> `,
-    date: '1天前',
-    title: '克里斯',
-  },
-  {
-    avatar: 'svg:avatar-4',
-    content: `发表文章 <a>如何编写一个Vite插件</a> `,
-    date: '2天前',
-    title: 'Vben',
-  },
-  {
-    avatar: 'svg:avatar-1',
-    content: `回复了 <a>杰克</a> 的问题 <a>如何进行项目优化？</a>`,
-    date: '3天前',
-    title: '皮特',
-  },
-  {
-    avatar: 'svg:avatar-2',
-    content: `关闭了问题 <a>如何运行项目</a> `,
-    date: '1周前',
-    title: '杰克',
-  },
-  {
-    avatar: 'svg:avatar-3',
-    content: `发布了 <a>个人动态</a> `,
-    date: '1周前',
-    title: '威廉',
-  },
-  {
-    avatar: 'svg:avatar-4',
-    content: `推送了代码到 <a>Github</a>`,
-    date: '2021-04-01 20:00',
-    title: '威廉',
-  },
-  {
-    avatar: 'svg:avatar-4',
-    content: `发表文章 <a>如何编写使用 Admin Vben</a> `,
-    date: '2021-03-01 20:00',
-    title: 'Vben',
+    content: `学习通大量接单,不暂停。`,
+    date: '2025-7-3',
+    title: '作者',
   },
 ];
 
@@ -235,14 +119,14 @@ function navTo(nav: WorkbenchProjectItem | WorkbenchQuickNavItem) {
 
 <template>
   <div class="p-5">
-    <WorkbenchHeader
+    <Headder
       :avatar="userStore.userInfo?.avatar || preferences.app.defaultAvatar"
     >
       <template #title>
         早安, {{ userStore.userInfo?.realName }}, 开始您一天的工作吧！
       </template>
       <template #description> 今日晴，20℃ - 32℃！ </template>
-    </WorkbenchHeader>
+    </Headder>
 
     <div class="mt-5 flex flex-col lg:flex-row">
       <div class="mr-4 w-full lg:w-3/5">
@@ -256,10 +140,6 @@ function navTo(nav: WorkbenchProjectItem | WorkbenchQuickNavItem) {
           title="快捷导航"
           @click="navTo"
         />
-        <WorkbenchTodo :items="todoItems" class="mt-5" title="待办事项" />
-        <AnalysisChartCard class="mt-5" title="访问来源">
-          <AnalyticsVisitsSource />
-        </AnalysisChartCard>
       </div>
     </div>
   </div>

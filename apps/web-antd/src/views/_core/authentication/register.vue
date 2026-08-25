@@ -2,12 +2,22 @@
 import type { VbenFormSchema } from '@vben/common-ui';
 import type { Recordable } from '@vben/types';
 
-import { computed, h, ref } from 'vue';
+import { AuthenticationRegister, SliderCaptcha, z } from '@vben/common-ui';
+import { computed, markRaw, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-import { AuthenticationRegister, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
+import { registerApi } from '#/api/core/auth';
+import { message } from 'ant-design-vue';
+
+
 defineOptions({ name: 'Register' });
+
+const router = useRouter(); // 添加这行获取router实例
+
+const inviteCodeFromURL = ref((router.currentRoute.value.query?.invite as string) || '');
+
 
 const loading = ref(false);
 
@@ -16,11 +26,30 @@ const formSchema = computed((): VbenFormSchema[] => {
     {
       component: 'VbenInput',
       componentProps: {
-        placeholder: $t('authentication.usernameTip'),
+        placeholder: $t('authentication.realNameTip'),
+      },
+      fieldName: 'realName',
+      label: $t('authentication.realName'),
+      rules: z
+        .string({
+          invalid_type_error: '请输入有效的昵称',
+        })
+        .refine((val) => !/^\d+$/.test(val), {
+          message: '昵称不能全为数字',
+        }),
+    },
+    {
+      component: 'VbenInput',
+      componentProps: {
+        placeholder: '请输入用户名(QQ)',
       },
       fieldName: 'username',
       label: $t('authentication.username'),
-      rules: z.string().min(1, { message: $t('authentication.usernameTip') }),
+      rules: z
+        .string({
+          invalid_type_error: '请输入有效的账号',
+        })
+        .min(8, { message: '账号必须大于或等于8位' }),
     },
     {
       component: 'VbenInputPassword',
@@ -58,39 +87,39 @@ const formSchema = computed((): VbenFormSchema[] => {
       label: $t('authentication.confirmPassword'),
     },
     {
-      component: 'VbenCheckbox',
-      fieldName: 'agreePolicy',
-      renderComponentContent: () => ({
-        default: () =>
-          h('span', [
-            $t('authentication.agree'),
-            h(
-              'a',
-              {
-                class: 'vben-link ml-1 ',
-                href: '',
-              },
-              `${$t('authentication.privacyPolicy')} & ${$t('authentication.terms')}`,
-            ),
-          ]),
-      }),
-      rules: z.boolean().refine((value) => !!value, {
-        message: $t('authentication.agreeTip'),
+      component: 'VbenInput',
+      componentProps: {
+        placeholder: $t('authentication.inviteCodeTip'),
+      },
+      defaultValue: inviteCodeFromURL.value,
+      fieldName: 'inviteCode',
+      label: $t('authentication.username'),
+      rules: z.string().min(1, { message: $t('authentication.inviteCodeTip') }),
+    },
+    {
+      component: markRaw(SliderCaptcha),
+      fieldName: 'captcha',
+      rules: z.boolean().refine((value) => value, {
+        message: $t('authentication.verifyRequiredTip'),
       }),
     },
   ];
 });
-
 function handleSubmit(value: Recordable<any>) {
   // eslint-disable-next-line no-console
-  console.log('register submit:', value);
+  registerApi(value).then(() => {
+    message.success('注册成功,即将跳转登录页面');
+    setTimeout(() => {
+      router.push({ name: 'Login' });
+    }, 3000);
+  });
 }
 </script>
 
 <template>
-  <AuthenticationRegister
-    :form-schema="formSchema"
-    :loading="loading"
-    @submit="handleSubmit"
-  />
+  <AuthenticationRegister 
+  :form-schema="formSchema" 
+  :loading="loading" 
+  subTitle="课由,从创建一个账号开始吧"
+  @submit="handleSubmit" />
 </template>

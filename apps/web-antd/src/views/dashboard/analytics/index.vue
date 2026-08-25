@@ -19,37 +19,54 @@ import AnalyticsVisitsData from './analytics-visits-data.vue';
 import AnalyticsVisitsSales from './analytics-visits-sales.vue';
 import AnalyticsVisitsSource from './analytics-visits-source.vue';
 import AnalyticsVisits from './analytics-visits.vue';
+import { getStats } from '#/api/stats/index'
+import { onMounted, ref, computed } from 'vue';
+const cardKeyTotalCount = ref(0);
+const createCardKeyTodayCount =ref(0);
+const usedTotalCount =ref(0);
+const usedTodayCount =ref(0);
+const downloadTotalCount =ref(0);
+const accessTotalCount =ref(0);
+onMounted(async () => {
+  // const res = await getStats()
+  // cardKeyTotalCount.value = res.cardKeyTotalCount;
+  // createCardKeyTodayCount.value = res.createCardKeyTodayCount;
+  // usedTotalCount.value = res.usedTotalCount;
+  // usedTodayCount.value = res.usedTodayCount;
+  // downloadTotalCount.value = res.downloadTotalCount;
+  // accessTotalCount.value = res.accessTotalCount;
+})
 
-const overviewItems: AnalysisOverviewItem[] = [
+const overviewItems = computed<AnalysisOverviewItem[]>(() => [
   {
     icon: SvgCardIcon,
-    title: '用户量',
-    totalTitle: '总用户量',
-    totalValue: 120_000,
-    value: 2000,
-  },
-  {
-    icon: SvgCakeIcon,
-    title: '访问量',
-    totalTitle: '总访问量',
-    totalValue: 500_000,
-    value: 20_000,
-  },
-  {
-    icon: SvgDownloadIcon,
-    title: '下载量',
-    totalTitle: '总下载量',
-    totalValue: 120_000,
-    value: 8000,
+    title: '今日量',
+    totalTitle: '总卡密量',
+    totalValue: cardKeyTotalCount.value,
+    value: createCardKeyTodayCount.value,
   },
   {
     icon: SvgBellIcon,
     title: '使用量',
     totalTitle: '总使用量',
-    totalValue: 50_000,
-    value: 5000,
+    totalValue: usedTotalCount.value,
+    value: usedTodayCount.value,
   },
-];
+  {
+    icon: SvgDownloadIcon,
+    title: '下载量',
+    totalTitle: '总下载量',
+    totalValue: downloadTotalCount.value,
+    value: 8000,
+  },
+  {
+    icon: SvgCakeIcon,
+    title: '访问量',
+    totalTitle: '总访问量',
+    totalValue: accessTotalCount.value,
+    value: 20_000,
+  },
+]);
 
 const chartTabs: TabOption[] = [
   {

@@ -12,6 +12,7 @@ const SvgBellIcon = createIconifyIcon('svg:bell');
 const SvgCakeIcon = createIconifyIcon('svg:cake');
 const SvgAntdvLogoIcon = createIconifyIcon('svg:antdv-logo');
 
+
 export {
   SvgAntdvLogoIcon,
   SvgAvatar1Icon,
@@ -22,4 +23,5 @@ export {
   SvgCakeIcon,
   SvgCardIcon,
   SvgDownloadIcon,
+  SvgCheckIcon,
 };
